@@ -1,5 +1,5 @@
 name: XCore
-version: '1.0-SNAPSHOT'
+version: '0.0.1'
 main: dc8.xCore.XCore
 api-version: '1.21'
 prefix: X-Core

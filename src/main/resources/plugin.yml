@@ -1,0 +1,31 @@
+name: XCore
+version: '1.0-SNAPSHOT'
+main: dc8.xCore.XCore
+api-version: '1.21'
+prefix: X-Core
+load: STARTUP
+authors: [ me ]
+description: "\\_o_/"
+
+commands:
+  gm:
+    description: Change your gamemode or another player's gamemode
+    usage: /gm <0|1|2|3> [player]
+    permission: xcore.gm
+
+permissions:
+  xcore.admin.gm.mode.0:
+    description: Allows changing the gamemode to survival
+    default: op
+  xcore.admin.gm.mode.1:
+    description: Allows changing the gamemode to creative
+    default: op
+  xcore.admin.gm.mode.2:
+    description: Allows changing the gamemode to adventure
+    default: op
+  xcore.admin.gm.mode.3:
+    description: Allows changing the gamemode to spectator
+    default: op
+  xcore.admin.gm.others:
+    description: Allows changing another player's gamemode (subject to the same gm.mode permissions)
+    default: op

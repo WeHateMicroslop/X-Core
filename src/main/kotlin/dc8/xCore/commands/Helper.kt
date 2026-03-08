@@ -6,8 +6,15 @@ import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import net.kyori.adventure.text.TextComponent
 
 object Helper {
+    /**
+     * Suggests players from the list of the online players.
+     * @param currentInput filters out the players not prefixed with this input.
+     * @param sender matches only the players visible to the sender. Matches all if `null`
+     * @return the list of the matched player names.
+     */
     fun suggestPlayers(currentInput: String, sender: CommandSender? = null): List<String> {
         return (
                 if (sender is Player)
@@ -18,10 +25,9 @@ object Helper {
             .filter { it.startsWith(currentInput, true) }
     }
 
-    fun Component.appendLine(component: Component): Component {
-        return this.append(component).appendNewline()
-    }
-
+    /**
+     * Appends without explicitly having to create a [TextComponent] every time.
+     */
     fun Component.append(
         text: String,
         color: NamedTextColor = NamedTextColor.WHITE,
@@ -29,14 +35,26 @@ object Helper {
         return this.append(Component.text(text, color, *textDecoration))
     }
 
+    /**
+     * Appends without explicitly having to create a [TextComponent] every time.
+     * Also appends a newLine.
+     *
+     * This is effectively the same as [myComponent.append(...)][Component.append].[newLine()][Component.appendNewline]
+     */
     fun Component.appendLine(
         text: String,
         color: NamedTextColor = NamedTextColor.WHITE,
         vararg textDecoration: TextDecoration): Component {
-        return this.appendLine(Component.text(text, color, *textDecoration))
+        return this.append(Component.text(text, color, *textDecoration)).appendNewline()
     }
 
-    fun CommandSender.hasAnyPermission(vararg permissions: String): Boolean {
+    /**
+     * Checks if this [CommandSender] has any of the provided permissions.
+     *
+     * @param permissions the list of permissions to check against.
+     * @return `true` if there was a match, otherwise `false`.
+     */
+    fun CommandSender.hasAnyPermissionOf(vararg permissions: String): Boolean {
         for(permission in permissions) {
             if (this.hasPermission(permission))
                 return true

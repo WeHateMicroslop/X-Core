@@ -4,7 +4,7 @@ import dc8.xCore.XCore
 import dc8.xCore.commands.Helper
 import dc8.xCore.commands.Helper.appendLine
 import dc8.xCore.commands.Helper.append
-import dc8.xCore.commands.Helper.hasAnyPermission
+import dc8.xCore.commands.Helper.hasAnyPermissionOf
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import net.kyori.adventure.text.Component
@@ -96,7 +96,7 @@ class GamemodeCmd(private val xCore: XCore) : BasicCommand {
         )
     }
 
-    override fun canUse(sender: CommandSender): Boolean = sender.hasAnyPermission(
+    override fun canUse(sender: CommandSender): Boolean = sender.hasAnyPermissionOf(
         Perms.SURVIVAL,
         Perms.CREATIVE,
         Perms.ADVENTURE,

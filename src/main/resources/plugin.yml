@@ -1,11 +1,11 @@
 name: XCore
-version: '1.0.0-alpha'
+version: ${version}
 main: dc8.xCore.XCore
 api-version: '1.21'
 prefix: X-Core
 load: STARTUP
 authors: [ me ]
-description: "\\_o_/"
+description: ":)"
 
 commands:
   gm:

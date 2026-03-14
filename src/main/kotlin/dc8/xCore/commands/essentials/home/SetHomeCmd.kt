@@ -34,7 +34,7 @@ class SetHomeCmd(val xCore: XCore) : BasicCommand {
             if (
                 !canBypassLimit
                 && homeRepository.countHomes(sender) >= limit
-                ) {
+            ) {
                 response = Responses.homeLimitReached(limit)
             }
 
@@ -60,20 +60,14 @@ class SetHomeCmd(val xCore: XCore) : BasicCommand {
     override fun permission(): String = Permissions.Home.SET
 
     /**
-     * Predefined error messages used by the command.
+     * Error message templates used by the command.
      */
     private object Responses {
-        /**
-         * The sender is invalid.
-         */
         val invalidSender = text(
             "You need to be a player to use this command.",
             NamedTextColor.RED
         )
 
-        /**
-         * The command can not be executed because of a permission error.
-         */
         fun homeLimitReached(homeLimit: Int): Component =
             text("You have already reached the limit of ", NamedTextColor.RED)
                 .append(homeLimit.toString(), NamedTextColor.LIGHT_PURPLE)

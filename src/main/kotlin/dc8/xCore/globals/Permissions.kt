@@ -5,9 +5,11 @@ object Permissions {
     private const val USER_CMD = XCORE_BASE + "user." + "command."
     private const val ADMIN = XCORE_BASE + "admin."
     private const val ADMIN_CMD = ADMIN + "command."
+
     object Reload {
-         const val RELOAD = ADMIN_CMD + "reload"
+        const val RELOAD = ADMIN_CMD + "reload"
     }
+
     object GM {
         private const val BASE = ADMIN_CMD + "gm."
         const val BASE_MODE = BASE + "mode."
@@ -17,6 +19,7 @@ object Permissions {
         const val SPECTATOR = BASE_MODE + 3
         const val OTHERS = BASE + "others"
     }
+
     object Home {
         private const val HOME = "home."
         private const val BASE_ADMIN = ADMIN_CMD + HOME

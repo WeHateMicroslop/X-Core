@@ -12,11 +12,11 @@ class PluginContext(xCore: JavaPlugin) {
     val homeCache: HomeCache
 
     init {
-        val dbConfig = xCore.config.run{
+        val dbConfig = xCore.config.run {
             DatabaseConfig(
-                getString("database.url")?: throw IllegalArgumentException("Database url is missing."),
-                getString("database.username")?: throw IllegalArgumentException("Database username is missing."),
-                getString("database.password")?: throw IllegalArgumentException("Database password is missing."),
+                getString("database.url") ?: throw IllegalArgumentException("Database url is missing."),
+                getString("database.username") ?: throw IllegalArgumentException("Database username is missing."),
+                getString("database.password") ?: throw IllegalArgumentException("Database password is missing."),
                 getInt("database.pool.maximumPoolSize"),
                 getInt("database.pool.minimumIdle"),
                 getLong("database.pool.connectionTimeout")
@@ -29,6 +29,7 @@ class PluginContext(xCore: JavaPlugin) {
         homeCache = HomeCache(xCore, homeRepository)
         xCore.server.pluginManager.registerEvents(homeCache, xCore)
     }
+
     fun cleanUp() {
         databaseManager.stop()
         homeCache.clear()

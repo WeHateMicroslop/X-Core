@@ -51,6 +51,7 @@ class DeleteHomeCmd(val xCore: XCore) : BasicCommand {
             1 -> homeCache.getCachedValuesOrEmptySet(context.sender as Player).filter {
                 it.startsWith(args[0])
             }.toMutableList()
+
             else -> mutableListOf()
         }
     }
@@ -64,20 +65,14 @@ class DeleteHomeCmd(val xCore: XCore) : BasicCommand {
 
 
     /**
-     * Predefined error messages used by the command.
+     * Error message templates used by the command.
      */
     private object Responses {
-        /**
-         * The sender is invalid.
-         */
         val invalidSender = text(
             " You need to be a player to use this command.",
             NamedTextColor.RED
         )
 
-        /**
-         * The command has a syntax error.
-         */
         val invalidSyntax =
             text(
                 "Invalid syntax. Expected syntax:",
@@ -86,9 +81,6 @@ class DeleteHomeCmd(val xCore: XCore) : BasicCommand {
                 .append("/deletehome ", NamedTextColor.WHITE)
                 .append(text("<home_name>", NamedTextColor.LIGHT_PURPLE))
 
-        /**
-         * The command can not be executed because of a permission error.
-         */
         fun homeNotFound(homeName: String): Component =
             text("You don't have a home with the name ", NamedTextColor.RED)
                 .append(homeName, NamedTextColor.LIGHT_PURPLE)

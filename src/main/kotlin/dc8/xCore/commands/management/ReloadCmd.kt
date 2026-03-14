@@ -9,14 +9,14 @@ import net.kyori.adventure.text.Component.text
 import net.kyori.adventure.text.format.NamedTextColor
 
 class ReloadCmd(private val xCore: XCore) : BasicCommand {
-    override fun execute(context : CommandSourceStack, rawArgs : Array<out String>) {
+    override fun execute(context: CommandSourceStack, rawArgs: Array<out String>) {
         if (rawArgs.isEmpty()) {
             context.sender.sendMessage(
                 text("$PLUGIN_NAME is running :)", NamedTextColor.GREEN)
             )
         }
 
-        when(rawArgs[0]) {
+        when (rawArgs[0]) {
             "reload" -> reload(context)
             else -> context.sender.sendMessage(
                 text("Invalid command '${rawArgs[0]}'")

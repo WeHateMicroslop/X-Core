@@ -4,10 +4,10 @@ import dc8.xCore.XCore
 import dc8.xCore.commands.append
 import dc8.xCore.commands.fail
 import dc8.xCore.commands.failUnit
-import dc8.xCore.entities.PlayerHome
 import dc8.xCore.globals.Permissions
 import dc8.xCore.globals.runAsync
 import dc8.xCore.repositories.DEFAULT_HOME_NAME
+import dc8.xCore.repositories.PlayerHome
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import net.kyori.adventure.text.Component
@@ -23,7 +23,7 @@ class LocateHomeCmd(val xCore: XCore) : BasicCommand {
     override fun execute(context: CommandSourceStack, rawArgs: Array<out String>) {
         val sender = context.sender
 
-        if(sender !is Player){
+        if (sender !is Player) {
             return sender.failUnit(Responses.invalidSender)
         }
 
@@ -35,7 +35,7 @@ class LocateHomeCmd(val xCore: XCore) : BasicCommand {
             if (home == null) {
                 sender.scheduler.run(
                     xCore,
-                    {_ -> sender.fail(Responses.homeNotFound(homeName ?: DEFAULT_HOME_NAME))},
+                    { _ -> sender.fail(Responses.homeNotFound(homeName ?: DEFAULT_HOME_NAME)) },
                     null
                 )
                 return@runAsync
@@ -44,8 +44,7 @@ class LocateHomeCmd(val xCore: XCore) : BasicCommand {
 
             sender.scheduler.run(
                 xCore,
-                {_ -> locateHome(sender, home)}
-                , null
+                { _ -> locateHome(sender, home) }, null
             )
         }
     }
@@ -57,9 +56,11 @@ class LocateHomeCmd(val xCore: XCore) : BasicCommand {
             1 -> homeCache.getCachedValuesOrEmptySet(context.sender as Player).filter {
                 it.startsWith(args[0])
             }.toMutableList()
+
             else -> mutableListOf()
         }
     }
+
     private fun locateHome(sender: Player, home: PlayerHome) {
         val worldSuffix = text(" | ", NamedTextColor.GRAY).run {
             when (Bukkit.getWorld(home.worldName)?.environment) {
@@ -72,27 +73,23 @@ class LocateHomeCmd(val xCore: XCore) : BasicCommand {
 
         sender.sendMessage(
             text(
-                home.name, NamedTextColor.LIGHT_PURPLE)
+                home.name, NamedTextColor.LIGHT_PURPLE
+            )
                 .append(":")
                 .append(" ${home.location.x} ${home.location.y} ${home.location.z}", NamedTextColor.WHITE)
                 .append(worldSuffix)
         )
     }
+
     /**
-     * Predefined, mostly static, error messages used by the command.
+     * Error message templates used by the command.
      */
     private object Responses {
-        /**
-         * The sender is invalid.
-         */
         val invalidSender = text(
             "You need to be a player to use this command.",
             NamedTextColor.RED
         )
 
-        /**
-         * The command can not be executed because of a permission error.
-         */
         fun homeNotFound(homeName: String): Component =
             text("You don't have a home with the name ", NamedTextColor.RED)
                 .append(homeName, NamedTextColor.LIGHT_PURPLE)

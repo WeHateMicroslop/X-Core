@@ -4,10 +4,10 @@ import dc8.xCore.XCore
 import dc8.xCore.commands.append
 import dc8.xCore.commands.fail
 import dc8.xCore.commands.failUnit
-import dc8.xCore.entities.PlayerHome
 import dc8.xCore.globals.Permissions
 import dc8.xCore.globals.runAsync
 import dc8.xCore.repositories.DEFAULT_HOME_NAME
+import dc8.xCore.repositories.PlayerHome
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import net.kyori.adventure.text.Component
@@ -22,7 +22,7 @@ class HomeCmd(val xCore: XCore) : BasicCommand {
     override fun execute(context: CommandSourceStack, rawArgs: Array<out String>) {
         val sender = context.sender
 
-        if(sender !is Player){
+        if (sender !is Player) {
             return sender.failUnit(Responses.invalidSender)
         }
 
@@ -34,7 +34,7 @@ class HomeCmd(val xCore: XCore) : BasicCommand {
             if (home == null) {
                 sender.scheduler.run(
                     xCore,
-                    {_ -> sender.fail(Responses.homeNotFound(homeName ?: DEFAULT_HOME_NAME))},
+                    { _ -> sender.fail(Responses.homeNotFound(homeName ?: DEFAULT_HOME_NAME)) },
                     null
                 )
                 return@runAsync
@@ -43,8 +43,7 @@ class HomeCmd(val xCore: XCore) : BasicCommand {
 
             sender.scheduler.run(
                 xCore,
-                {_ -> teleportPlayerToHome(sender, home)}
-                , null)
+                { _ -> teleportPlayerToHome(sender, home) }, null)
         }
     }
 
@@ -54,9 +53,11 @@ class HomeCmd(val xCore: XCore) : BasicCommand {
             1 -> homeCache.getCachedValuesOrEmptySet(context.sender as Player).filter {
                 it.startsWith(args[0])
             }.toMutableList()
+
             else -> mutableListOf()
         }
     }
+
     override fun permission(): String = Permissions.Home.TELEPORT
     private fun teleportPlayerToHome(sender: Player, home: PlayerHome) {
         sender.teleport(home.location, PlayerTeleportEvent.TeleportCause.COMMAND)
@@ -64,20 +65,14 @@ class HomeCmd(val xCore: XCore) : BasicCommand {
     }
 
     /**
-     * Predefined error messages used by the command.
+     * Error message templates used by the command.
      */
     private object Responses {
-        /**
-         * The sender is invalid.
-         */
         val invalidSender = text(
             " You need to be a player to use this command.",
             NamedTextColor.RED
         )
 
-        /**
-         * The command can not be executed because of a permission error.
-         */
         fun homeNotFound(homeName: String): Component =
             text("You don't have a home with the name ", NamedTextColor.RED)
                 .append(homeName, NamedTextColor.LIGHT_PURPLE)

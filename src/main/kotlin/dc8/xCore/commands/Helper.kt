@@ -57,6 +57,7 @@ fun Audience.fail(message: Component): Nothing? {
     sendMessage(message)
     return null
 }
+
 /**
  * Sends the given Component as a message.
  * Usually used to shorten repetitive sending of

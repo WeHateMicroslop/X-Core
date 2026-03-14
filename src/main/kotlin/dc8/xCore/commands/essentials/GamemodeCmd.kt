@@ -109,7 +109,7 @@ class GamemodeCmd(private val xCore: XCore) : BasicCommand {
         if (!sender.hasPermission(Perms.BASE_MODE + gamemodeInt))
             return sender.fail(Responses.permissionError)
 
-        val targetPlayer = when(rawArgs.size) {
+        val targetPlayer = when (rawArgs.size) {
             2 -> Bukkit.getPlayer(rawArgs[1])!!
             else -> context.executor as Player
         }
@@ -135,24 +135,19 @@ class GamemodeCmd(private val xCore: XCore) : BasicCommand {
 }
 
 /**
- * Predefined error messages used by the command.
+ * Error message templates used by the command.
  */
 private object Responses {
     fun success(gamemode: String): Component =
         text("Gamemode changed to ", NamedTextColor.GREEN)
             .append(gamemode, NamedTextColor.LIGHT_PURPLE)
 
-    /**
-     * The target is invalid.
-     */
     val invalidTarget = text(
         "The target is not a valid player.",
         NamedTextColor.RED
     )
 
-    /**
-     * The command has a syntax error.
-     */
+
     val invalidSyntax = text(
         "Invalid syntax. Expected syntax:",
         NamedTextColor.RED
@@ -179,9 +174,6 @@ private object Responses {
                 )
         )
 
-    /**
-     * The command can not be executed because of a permission error.
-     */
     val permissionError = text(
         "You don't have permission to use this command (like this).", NamedTextColor.RED
     )

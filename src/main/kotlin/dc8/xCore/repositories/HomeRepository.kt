@@ -1,6 +1,5 @@
 package dc8.xCore.repositories
 
-import dc8.xCore.entities.PlayerHome
 import dc8.xCore.persistence.executeParameterizedCommand
 import dc8.xCore.persistence.executeParameterizedQuery
 import org.bukkit.Bukkit
@@ -11,6 +10,14 @@ import java.sql.SQLException
 import javax.sql.DataSource
 
 const val DEFAULT_HOME_NAME = "home"
+
+data class PlayerHome(
+    val uuid: String,
+    val name: String,
+    val worldName: String,
+    val location: Location
+)
+
 class HomeRepository(private val dataSource: DataSource) {
     init {
         val sql = """

@@ -56,20 +56,14 @@ class HomesCmd(val xCore: XCore) : BasicCommand {
     }
 
     /**
-     * Predefined error messages used by the command.
+     * Error message templates used by the command.
      */
     private object Responses {
-        /**
-         * The sender is invalid.
-         */
         val invalidSender = text(
             " You need to be a player to use this command.",
             NamedTextColor.RED
         )
 
-        /**
-         * The command can not be executed because of a permission error.
-         */
         val noHomesFound = text(
             "You don't have any homes.",
             NamedTextColor.RED

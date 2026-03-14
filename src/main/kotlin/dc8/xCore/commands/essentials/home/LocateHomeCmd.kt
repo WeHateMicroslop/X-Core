@@ -16,6 +16,10 @@ import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.entity.Player
+import java.util.concurrent.atomic.AtomicInteger
+import kotlin.math.IEEErem
+import kotlin.math.atan2
+
 
 class LocateHomeCmd(val xCore: XCore) : BasicCommand {
     private val homeRepository = xCore.pluginContext.homeRepository
@@ -46,6 +50,24 @@ class LocateHomeCmd(val xCore: XCore) : BasicCommand {
                 xCore,
                 { _ -> locateHome(sender, home) }, null
             )
+
+            val runs = AtomicInteger(0)
+            val maxRuns = 10 * 20 * 4 // seconds * 20 ticks/s * periodTicks
+
+            sender.scheduler.runAtFixedRate(
+                xCore,
+                {task ->
+                    if (runs.incrementAndGet() > maxRuns) {
+                        task.cancel()
+                        return@runAtFixedRate
+                    }
+
+                    sender.sendActionBar(getVectorDescription(sender, home))
+                },
+                null,
+                1,
+                5
+            )
         }
     }
 
@@ -61,7 +83,7 @@ class LocateHomeCmd(val xCore: XCore) : BasicCommand {
         }
     }
 
-    private fun locateHome(sender: Player, home: PlayerHome) {
+    private fun locateHome(player: Player, home: PlayerHome) {
         val worldSuffix = text(" | ", NamedTextColor.GRAY).run {
             when (Bukkit.getWorld(home.worldName)?.environment) {
                 World.Environment.NORMAL -> append("overworld")
@@ -71,15 +93,44 @@ class LocateHomeCmd(val xCore: XCore) : BasicCommand {
             }
         }
 
-        sender.sendMessage(
+        player.sendMessage(
             text(
                 home.name, NamedTextColor.LIGHT_PURPLE
             )
                 .append(":")
-                .append(" ${home.location.x} ${home.location.y} ${home.location.z}", NamedTextColor.WHITE)
+                .append(" ${home.location.x.toInt()} ${home.location.y.toInt()} ${home.location.z.toInt()}", NamedTextColor.WHITE)
                 .append(worldSuffix)
         )
     }
+
+    private fun getVectorDescription(player: Player, home: PlayerHome): Component {
+        val yDiff = when {
+            home.location.y > player.location.y -> " (above you)"
+            home.location.y < player.location.y -> " (below you)"
+            else -> ""
+        }
+
+        val dx = home.location.x - player.location.x
+        val dz = home.location.z - player.location.z
+
+        val targetYaw = Math.toDegrees(atan2(-dx, dz))
+        val angle = (targetYaw - player.location.yaw).IEEErem(360.0)
+
+        return text(getArrowFromAngle(angle), NamedTextColor.GRAY).append(yDiff)
+    }
+
+    private fun getArrowFromAngle(angle: Double): String =
+        when {
+            angle >= -22.5 && angle < 22.5 -> "↑"
+            angle >= 22.5 && angle < 67.5 -> "⬈"
+            angle >= 67.5 && angle < 112.5 -> "→"
+            angle >= 112.5 && angle < 157.5 -> "⬊"
+            angle >= 157.5 || angle < -157.5 -> "↓"
+            angle >= -157.5 && angle < -112.5 -> "⬋"
+            angle >= -112.5 && angle < -67.5 -> "←"
+            angle >= -67.5 -> "⬉"
+            else -> "•"
+        }
 
     /**
      * Error message templates used by the command.

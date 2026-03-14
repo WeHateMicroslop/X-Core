@@ -24,6 +24,12 @@ class ReloadCmd(private val xCore: XCore) : BasicCommand {
         }
     }
 
+    override fun suggest(commandSourceStack: CommandSourceStack, args: Array<out String>): MutableCollection<String> =
+        when(args.size) {
+            0 -> mutableListOf("reload")
+            1 -> if (args[0].startsWith("reload")) mutableListOf("reload") else mutableListOf()
+            else -> mutableListOf()
+        }
     override fun permission(): String = Permissions.Reload.RELOAD
 
     private fun reload(context: CommandSourceStack) {

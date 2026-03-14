@@ -1,31 +1,72 @@
 name: XCore
-version: '0.0.1'
+version: ${version}
 main: dc8.xCore.XCore
 api-version: '1.21'
 prefix: X-Core
 load: STARTUP
 authors: [ me ]
-description: "\\_o_/"
+description: ":)"
 
 commands:
   gm:
     description: Change your gamemode or another player's gamemode
     usage: /gm <0|1|2|3> [player]
-    permission: xcore.gm
+  xcore reload:
+    description: Reloads the X-Core config.
+    usage: /xcore reload
+    permission: xcore.admin.command.reload
+  sethome:
+    description: Create your home.
+    usage: /sethome [home_name]
+    permission: xcore.user.command.home.set
+  deletehome:
+    description: Delete your home.
+    usage: /deletehome <home_name>
+    permission: xcore.user.command.home.delete
+    aliases:
+      - delhome
+      - removehome
+      - rmhome
+  home:
+    description: Teleport to your home.
+    usage: /home [home_name]
+    permission: xcore.user.command.home.teleport
+  locatehome:
+    description: Locates your home.
+    usage: /locatehome [home_name]
+    permission: xcore.user.command.home.locate
+    aliases:
+      - lhome
+  homes:
+    description: Lists your homes.
+    usage: /homes
+    permission: xcore.user.command.home.list
 
 permissions:
-  xcore.admin.gm.mode.0:
+  # Gamemode
+  xcore.admin.command.gm.mode.0:
     description: Allows changing the gamemode to survival
-    default: op
-  xcore.admin.gm.mode.1:
+  xcore.admin.command.gm.mode.1:
     description: Allows changing the gamemode to creative
-    default: op
-  xcore.admin.gm.mode.2:
+  xcore.admin.command.gm.mode.2:
     description: Allows changing the gamemode to adventure
-    default: op
-  xcore.admin.gm.mode.3:
+  xcore.admin.command.gm.mode.3:
     description: Allows changing the gamemode to spectator
-    default: op
-  xcore.admin.gm.others:
+  xcore.admin.command.gm.others:
     description: Allows changing another player's gamemode (subject to the same gm.mode permissions)
-    default: op
+  # Reload
+  xcore.admin.command.reload:
+    description: Allows reloading X-Core Config
+  # Home
+  xcore.user.command.home.teleport:
+    description: Allows teleporting to your home.
+  xcore.admin.command.home.bypasslimit:
+    description: Allows bypassing the homes limit count.
+  xcore.user.command.home.set:
+    description: Allows setting your home.
+  xcore.user.command.home.delete:
+    description: Allows deleting your home.
+  xcore.user.command.home.locate:
+    description: Allows locating your home.
+  xcore.user.command.home.list:
+    description: Allows listing your homes.

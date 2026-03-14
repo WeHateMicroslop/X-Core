@@ -1,0 +1,17 @@
+database:
+  # SQLite:
+  url: "jdbc:sqlite:plugins/X-Core/data.db"
+  username: ""
+  password: ""
+  # PostgreSQL:
+  # url: "jdbc:postgresql://localhost:5432/minecraft"
+  # username: "xcore"
+  # password: "changeme"
+
+  pool:
+    maximumPoolSize: 10
+    minimumIdle: 2
+    connectionTimeout: 30000
+
+homes:
+  limit: 3

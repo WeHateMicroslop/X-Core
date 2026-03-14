@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "dc8"
-version = "0.0.1"
+version = "1.0.0-alpha"
 
 repositories {
     mavenCentral()
@@ -16,7 +16,12 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("com.zaxxer:HikariCP:5.1.0")
+
+    runtimeOnly("org.xerial:sqlite-jdbc:3.45.1.0")
+    runtimeOnly("org.postgresql:postgresql:42.7.3")
 }
 
 tasks {
